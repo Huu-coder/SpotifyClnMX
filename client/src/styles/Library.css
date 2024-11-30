@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lexend', sans-serif;
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    background-color: #121212;
+    color: white;
+    text-decoration: none;
+}
+
+.__mdrp5m p:nth-of-type(1) a, .rswp_duration {
+    color: 	#1db954 !important;
+}
+
+.ml-3 > * {
+    background-color: #1e1e1e !important;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.PlayerRSWP {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.__14asrht button.rswp__active {
+    color: #1db954 !important;
+}
+
+.rswp_progress {
+    color: #1db954 !important;
+}
+
+.cont-dash {
+    display: flex !important;
+    justify-content: center !important;
+    flex-direction: column;
+}
+
+.form-control {
+    position: fixed; /* Makes the element fixed on the screen */
+    top: 0; /* Positions it at the top */
+    left: 50%; /* Moves it to the horizontal center */
+    transform: translateX(-50%); /* Adjusts to truly center the element */
+    z-index: 1000; /* Ensures it's above other content (optional) */
+    padding: 15px;
+    margin: 10px !important;
+    width: 500px;
+  }
+
+  .volume__thumb, .slider__thumb {
+    cursor: pointer;
+    background-color: #1db954 !important;
+    color: white !important;
+  }
+
+ .mt-60 {
+    padding-top: 60px;
+  }
+
+ ._ContentWrapperRSWP > a {
+    display: none;
+}
+
+._ContentWrapperRSWP {
+    color: white !important;
+}
+
+ ._WrapperRSWP {
+    border-radius: 10px !important;
+    border: 1px solid #1f1f1f;
+}
+
+ ._ControlsButtonsRSWP > * > button {
+    border-radius: 10px;
+    padding: 10px !important;
+}
+
+.d-flex .m-2 .align-items-center {
+    margin-right: 10px;
+}
+
+.text-center {
+    margin-top: 10px !important;
+}
+
+.mu-container {
+    display: flex;
+    height: 90vh !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 50vw !important;
+    position: relative;
+
+}
+
+*::-webkit-scrollbar {
+    width: 5px; /* Width of the scrollbar */
+}
+
+*::-webkit-scrollbar-track {
+    background: #121212; /* Background color for the scrollbar track */
+}
+
+*::-webkit-scrollbar-thumb {
+    background: #b3b3b3; /* Color of the scrollbar thumb */
+    border-radius: 5px; /* Rounded edges */
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: #d1d1d1; /* Lighter gray on hover */
+}
+
+
+.card {
+    width: 200px !important;
+    height: 300px !important;
+    border: 1px solid #333333;
+    border-radius: 10px;
+    margin: 10px !important;
+    display: flex;
+    flex-direction: column;
+    color: white; /* Text color */
+    border-radius: 10px;
+    overflow: hidden; /* Round the edges of the image */
+    background-color: #1e1e1e;
+}
+
+.card > img {
+    width: 100% !important; /* Full width of the card */
+    height: 70% !important;
+    aspect-ratio: 1; /* Ensures a square image */
+    object-fit: cover; /* Keeps the image nicely cropped */
+}
+
+.card > div > div:first-child {
+    padding: 16px !important;
+    text-align: center;
+}
+
+.navbar_navList__v4rjz > * > *{
+    background-color: #000 !important;
+}
+
+
+/* Styling the sidebar where the lyrics will be shown */
+.lyrics-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px; /* Width of the navbar */
+    height: calc(100vh - 122px); /* Full height */
+    background-color: #000000; /* Dark background */
+    display: flex;
+    flex-direction: column; /* Vertical layout */
+    padding: 20px;
+    overflow: auto;
+  }
+
+  .lyrics-container {
+    text-align: left;
+    height: calc(100vh - 122px);
+    background-color: #000000;
+  }
+
+  .lyrics-container > h4 {
+    background-color: #000;
+  }
+
+  .lyrics-text {
+    white-space: pre-wrap;
+    font-size: 14px;
+    background-color: #000;
+    text-align: center;
+  }

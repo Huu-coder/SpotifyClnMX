@@ -1,0 +1,15 @@
+  useEffect(() => {
+    if (!accessToken) return
+    spotifyApi.setAccessToken(accessToken)
+  }, [accessToken])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+        console.log("Updated");
+        handleSpotifyError();
+        handleSpotifySearch();
+    }, 1000);
+
+    // Cleanup để ngăn rò rỉ bộ nhớ khi component unmount
+    return () => clearInterval(interval);
+}, []); // Mảng rỗng giúp chỉ cài đặt interval một lần

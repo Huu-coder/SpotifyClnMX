@@ -1,0 +1,33 @@
+/* Navbar Styles */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px; /* Width of the navbar */
+    height: 100vh; /* Full height */
+    background-color: #000000; /* Dark background */
+    display: flex;
+    flex-direction: column; /* Vertical layout */
+    padding: 20px 0;
+  }
+
+  .navList {
+    list-style-type: none; /* No bullet points */
+    padding: 0;
+    margin: 0;
+  }
+
+  .navItem {
+    color: #b3b3b3; /* Light gray text */
+    font-size: 1rem;
+    padding: 10px 20px;
+    text-decoration: none; /* Remove underline */
+    border-radius: 4px;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .navItem:hover {
+    background-color: #1db954; /* Spotify green on hover */
+    color: #ffffff; /* White text on hover */
+  }
