@@ -1,226 +1,171 @@
 import { useState, useEffect } from "react";
 import Player from "./Player";
-import TrackSearchResult from "./TrackSearchResult";
-import { Container, Row, Col } from "react-bootstrap"; // Import for responsive layout
+import { Container, Button, Card } from "react-bootstrap";
 import SpotifyWebApi from "spotify-web-api-node";
 import axios from "axios";
-import './styles/Library.css';
+import "./styles/Explorer.css";
 import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
+import buttuncss from "./styles/BackButton.module.css";
 
-// Initialize Spotify API with your client ID
 const spotifyApi = new SpotifyWebApi({
   clientId: "19cbbf609a00420e9869fe84b33785ea",
 });
 
-export default function Library() {
+// Define an expanded list of music genres
+const MUSIC_GENRES = [
+  "pop", "rock", "hip hop", "classical", "jazz",
+  "electronic", "country", "r&b", "indie",
+  "metal", "blues", "folk", "reggae",
+  "punk", "alternative", "soul"
+];
+
+export default function Explorer() {
   const accessToken = localStorage.getItem("spotifyAccessToken");
-  const [likedTracks, setLikedTracks] = useState([]);
-  const [playingTrack, setPlayingTrack] = useState();
+  const [playingTrack, setPlayingTrack] = useState(null);
   const [lyrics, setLyrics] = useState("");
-  const [topTracks, setTopTracks] = useState([]);
-  const [classicalTracks, setClassicalTracks] = useState([]);
-  const [popTracks, setPopTracks] = useState([]);
-  const [picksForYou, setPicksForYou] = useState([]);
+  const [recommendations, setRecommendations] = useState({});
+  const [showLyrics, setShowLyrics] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch liked tracks (saved songs) from the Spotify API
-  useEffect(() => {
-    if (!accessToken) return;
-
-    spotifyApi.setAccessToken(accessToken);
-
-    // Get user's saved tracks
-    spotifyApi.getMySavedTracks().then(
-      (res) => {
-        const tracks = res.body.items.map(item => {
-          const track = item.track;
-          const smallestAlbumImage = track.album.images.reduce(
-            (smallest, image) => (image.height < smallest.height ? image : smallest),
-            track.album.images[0]
-          );
-
-          return {
-            artist: track.artists[0].name,
-            title: track.name,
-            uri: track.uri,
-            albumUrl: smallestAlbumImage.url,
-          };
-        });
-        setLikedTracks(tracks);
-      },
-      (err) => {
-        console.error('Error fetching liked tracks:', err);
-      }
-    );
-  }, [accessToken]);
-
-  // Fetch top tracks, classical, pop, and personalized picks
-  useEffect(() => {
-    if (!accessToken) return;
-
-    spotifyApi.setAccessToken(accessToken);
-
-    // Fetch top tracks (use a playlist or a chart for global top songs)
-    spotifyApi.getPlaylistTracks("37i9dQZEVXbMDoHDwVN2tF") // Example of a global top 50 playlist
-      .then(res => {
-        const tracks = res.body.items.slice(0, 10).map(item => {
-          const track = item.track;
-          return {
-            artist: track.artists[0].name,
-            title: track.name,
-            uri: track.uri,
-            albumUrl: track.album.images[0].url,
-          };
-        });
-        setTopTracks(tracks);
-      });
-
-    // Fetch top classical tracks
-    spotifyApi.searchTracks("classical", { limit: 10, offset: 0 })
-      .then(res => {
-        const tracks = res.body.tracks.items.map(item => {
-          const track = item;
-          return {
-            artist: track.artists[0].name,
-            title: track.name,
-            uri: track.uri,
-            albumUrl: track.album.images[0].url,
-          };
-        });
-        setClassicalTracks(tracks);
-      });
-
-    // Fetch top pop tracks
-    spotifyApi.searchTracks("pop", { limit: 10, offset: 0 })
-      .then(res => {
-        const tracks = res.body.tracks.items.map(item => {
-          const track = item;
-          return {
-            artist: track.artists[0].name,
-            title: track.name,
-            uri: track.uri,
-            albumUrl: track.album.images[0].url,
-          };
-        });
-        setPopTracks(tracks);
-      });
-
-    // Fetch personalized recommendations ("Picks for You")
-    spotifyApi.getRecommendations({ limit: 10 })
-      .then(res => {
-        const tracks = res.body.tracks.map(item => {
-          const track = item;
-          return {
-            artist: track.artists[0].name,
-            title: track.name,
-            uri: track.uri,
-            albumUrl: track.album.images[0].url,
-          };
-        });
-        setPicksForYou(tracks);
-      });
-
-  }, [accessToken]);
-
-  // Handle selecting a track to play
   function chooseTrack(track) {
-    setPlayingTrack(track);
-    setLyrics(""); // Reset lyrics when a new track is selected
+    setPlayingTrack(null);
+    setTimeout(() => {
+      setPlayingTrack(track);
+      setLyrics("");
+      setShowLyrics(true);
+    }, 0);
   }
 
-  // Fetch lyrics for the selected track
+  // Fetch lyrics when a track is selected
   useEffect(() => {
     if (!playingTrack) return;
 
     axios
       .get("http://localhost:3001/lyrics", {
         params: {
-          track: playingTrack.title,
-          artist: playingTrack.artist,
+          track: playingTrack.name,
+          artist: playingTrack.artists[0].name,
         },
       })
       .then((res) => {
         setLyrics(res.data.lyrics);
+      })
+      .catch((err) => {
+        console.error("Error fetching lyrics:", err);
+        setLyrics("Lyrics not found.");
       });
   }, [playingTrack]);
+
+  useEffect(() => {
+    if (!accessToken) return;
+    spotifyApi.setAccessToken(accessToken);
+
+    // Enhanced recommendations fetching
+    const fetchRecommendations = async () => {
+      try {
+        setIsLoading(true);
+
+        // Fetch user's top tracks
+        const topTracks = await spotifyApi.getMyTopTracks({ limit: 10 });
+
+        // Fetch tracks for multiple genres
+        const genreRecommendations = {};
+
+        for (const genre of MUSIC_GENRES) {
+          try {
+            const genreTracks = await spotifyApi.searchTracks(`genre:${genre}`, { limit: 10 });
+            genreRecommendations[genre] = genreTracks.body.tracks.items;
+          } catch (genreErr) {
+            console.error(`Error fetching ${genre} tracks:`, genreErr);
+            genreRecommendations[genre] = [];
+          }
+        }
+
+        setRecommendations({
+          topTracks: topTracks.body.items,
+          ...genreRecommendations
+        });
+      } catch (err) {
+        console.error("Error fetching recommendations:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRecommendations();
+  }, [accessToken]);
+
+  const handleBackClick = () => {
+    setShowLyrics(false);
+    setLyrics("");
+    setPlayingTrack(null);
+  };
+
+  const renderTrackSection = (tracks, title) => (
+    tracks.length > 0 && (
+      <div>
+        <h2>{title}</h2>
+        <div className="track-list">
+          {tracks.map((track) => (
+            <Card
+              key={track.uri}
+              style={{ width: "180px", margin: "10px", cursor: "pointer" }}
+              onClick={() => chooseTrack(track)}
+            >
+              <Card.Img variant="top" src={track.album.images[0]?.url} />
+              <Card.Body>
+                <Card.Title>{track.name}</Card.Title>
+                <Card.Text>{track.artists[0].name}</Card.Text>
+              </Card.Body>
+            </Card>
+          ))}
+        </div>
+      </div>
+    )
+  );
 
   return (
     <div>
       <Navbar />
-      <Container className="d-flex flex-column py-2" style={{ height: "100vh" }}>
-        <Row>
-          {/* Main content on the left (Liked Songs and Player) */}
-          <Col sm={8} style={{ paddingRight: "20px" }}>
-            <div className="mu-container" style={{ overflowY: "auto", maxHeight: "calc(100vh - 70px)" }}>
-              {likedTracks.length === 0 ? (
-                <p>No liked tracks available. Please log in to Spotify to see your library.</p>
-              ) : (
-                likedTracks.map((track) => (
-                  <TrackSearchResult
-                    track={track}
-                    key={track.uri}
-                    chooseTrack={chooseTrack}
-                  />
-                ))
-              )}
+      <Container className="d-flex flex-column py-2 cont-explorer" style={{ height: "100vh" }}>
+        <Button
+          onClick={handleBackClick}
+          variant="secondary"
+          className={buttuncss.butt}
+          style={{ display: showLyrics ? "block" : "none" }}
+        >
+          Back
+        </Button>
+
+        <Sidebar accessToken={accessToken} chooseTrack={chooseTrack} />
+
+        <div className="ex-container" style={{ overflowY: "auto" }}>
+          {isLoading ? (
+            <div className="text-center">Loading recommendations...</div>
+          ) : showLyrics ? (
+            <div className="text-center" style={{ whiteSpace: "pre" }}>
+              {lyrics ? lyrics : "Lyrics not available"}
             </div>
-            {playingTrack && (
-              <div>
-                <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
-              </div>
-            )}
-          </Col>
+          ) : (
+            <>
+              {/* Top 10 Songs */}
+              {renderTrackSection(recommendations.topTracks || [], "Your Top 10 Songs")}
 
-          {/* Sidebar on the right for displaying lyrics */}
-          <Col sm={4} className="lyrics-sidebar">
-            {playingTrack && (
-              <div className="lyrics-container">
-                <h4>{playingTrack.title} - {playingTrack.artist}</h4>
-                <div className="lyrics-text">{lyrics || "No lyrics available."}</div>
-              </div>
-            )}
-          </Col>
-        </Row>
+              {/* Render tracks for each genre */}
+              {MUSIC_GENRES.map((genre) =>
+                renderTrackSection(
+                  recommendations[genre] || [],
+                  `Top 10 ${genre.charAt(0).toUpperCase() + genre.slice(1)} Songs`
+                )
+              )}
+            </>
+          )}
+        </div>
 
-        {/* Display top tracks, classical, pop, and picks for you */}
-        <Row>
-          <Col sm={12}>
-            <h3>Top 10 Songs</h3>
-            {topTracks.map(track => (
-              <TrackSearchResult
-                track={track}
-                key={track.uri}
-                chooseTrack={chooseTrack}
-              />
-            ))}
-
-            <h3>Top 10 Classical Tracks</h3>
-            {classicalTracks.map(track => (
-              <TrackSearchResult
-                track={track}
-                key={track.uri}
-                chooseTrack={chooseTrack}
-              />
-            ))}
-
-            <h3>Top 10 Pop Tracks</h3>
-            {popTracks.map(track => (
-              <TrackSearchResult
-                track={track}
-                key={track.uri}
-                chooseTrack={chooseTrack}
-              />
-            ))}
-
-            <h3>Picks for You</h3>
-            {picksForYou.map(track => (
-              <TrackSearchResult
-                track={track}
-                key={track.uri}
-                chooseTrack={chooseTrack}
-              />
-            ))}
-          </Col>
-        </Row>
+        <div>
+          <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
+        </div>
       </Container>
     </div>
   );

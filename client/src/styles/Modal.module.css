@@ -1,0 +1,49 @@
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8); /* Nền mờ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Đảm bảo modal sẽ xuất hiện trên navbar */
+  }
+
+  .modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    height: 90%;
+    background-color: #FF000000;
+  }
+
+  .button {
+    cursor: pointer;
+    background-color: #ff000000;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    border: none !important;
+  }
+
+  .closeButton {
+    background-color: #ff000000;
+    cursor: pointer;
+    font-size: 16px;
+    border: none !important;
+  }
+
+  .button:hover {
+    color:  #33c065 !important;
+  }
+
+  .closeButton:hover {
+    color: red !important;
+  }

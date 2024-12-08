@@ -6,6 +6,7 @@ import SpotifyWebApi from "spotify-web-api-node";
 import axios from "axios";
 import './styles/Library.css';
 import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
 
 // Initialize Spotify API with your client ID
 const spotifyApi = new SpotifyWebApi({
@@ -29,8 +30,11 @@ export default function Library() {
       (res) => {
         const tracks = res.body.items.map(item => {
           const track = item.track;
-          const smallestAlbumImage = track.album.images.reduce(
-            (smallest, image) => (image.height < smallest.height ? image : smallest),
+          const largestAlbumImage = track.album.images.reduce(
+            (largest, image) => {
+              if (image.height > largest.height) return image;
+              return largest;
+            },
             track.album.images[0]
           );
 
@@ -38,7 +42,7 @@ export default function Library() {
             artist: track.artists[0].name,
             title: track.name,
             uri: track.uri,
-            albumUrl: smallestAlbumImage.url,
+            albumUrl: largestAlbumImage.url,
           };
         });
         setLikedTracks(tracks);
@@ -74,11 +78,12 @@ export default function Library() {
   return (
     <div>
       <Navbar />
+      <Sidebar accessToken={accessToken} chooseTrack={chooseTrack} />
       <Container className="d-flex flex-column py-2" style={{ height: "100vh" }}>
         <Row>
           {/* Main content on the left (Liked Songs and Player) */}
           <Col sm={8} style={{ paddingRight: "20px" }}>
-            <div className="mu-container" style={{ overflowY: "auto", maxHeight: "calc(100vh - 70px)" }}>
+            <div className="lib-container" style={{ overflowY: "auto", maxHeight: "calc(100vh - 70px)" }}>
               {likedTracks.length === 0 ? (
                 <p>No liked tracks available. Please log in to Spotify to see your library.</p>
               ) : (
@@ -103,7 +108,7 @@ export default function Library() {
             {playingTrack && (
               <div className="lyrics-container">
                 <h4>{playingTrack.title} - {playingTrack.artist}</h4>
-                <div className="lyrics-text">{lyrics || "No lyrics available."}</div>
+                <div className="lyrics-text">{lyrics || "No lyrics available / found."}</div>
               </div>
             )}
           </Col>

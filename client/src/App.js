@@ -15,6 +15,12 @@ const App = () => {
     const storedToken = localStorage.getItem("spotifyAccessToken");
     if (storedToken) {
       setAccessToken(storedToken); // Set the token if found
+      if (localStorage.getItem("userLogin") == "true") {
+        navigate("/Dashboard"); // Redirect to Dashboard if user is logged in
+      }
+    }
+    else {
+      navigate("/Login"); // Redirect to Login if no token is found
     }
   }, []);
 

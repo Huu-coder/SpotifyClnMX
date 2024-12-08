@@ -1,0 +1,23 @@
+.butt {
+    margin-bottom: 1rem;  /* 1rem = 16px */
+}
+
+.butt {
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #007bff; /* Blue background */
+    color: white;
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .butt:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly enlarge the .butt on hover */
+  }
+
+  .butt:focus {
+    outline: none; /* Remove default focus outline */
+  }

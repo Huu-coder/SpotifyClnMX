@@ -5,6 +5,6 @@ import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
 
 // Bạn cần thêm Access Token vào đây
-spotifyApi.setAccessToken('YOUR_SPOTIFY_ACCESS_TOKEN');  // Thay 'YOUR_SPOTIFY_ACCESS_TOKEN' bằng token của bạn
+spotifyApi.setAccessToken('19cbbf609a00420e9869fe84b33785ea');  // Thay 'YOUR_SPOTIFY_ACCESS_TOKEN' bằng token của bạn
 
 export default spotifyApi;

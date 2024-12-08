@@ -7,7 +7,7 @@
     border-radius: 5px !important;
     box-shadow: none !important;
     background-color: #060606;
-    color: white;
+    color: white !important;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
 }
@@ -100,13 +100,27 @@
     height: 90vh !important;
 }
 
-.lib-container {
+.ex-container {
     display: flex;
     height: 90vh !important;
     flex-wrap: wrap;
+    flex-direction: row;
     justify-content: center;
     width: 74vw !important;
 }
+
+.ex-container > div {
+    margin: 10px !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.ex-container > div > div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
 
 *::-webkit-scrollbar {
     width: 5px; /* Width of the scrollbar */
@@ -126,36 +140,74 @@
 }
 
 
-
-/* Styling the sidebar where the lyrics will be shown */
-.lyrics-sidebar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 300px; /* Width of the navbar */
-    height: calc(100vh - 182px); /* Full height */
-    background-color: #000000; /* Dark background */
+.card {
+    width: 200px !important;
+    height: 300px !important;
+    border: 1px solid #333333;
+    border-radius: 10px;
+    margin: 10px !important;
     display: flex;
-    flex-direction: column; /* Vertical layout */
-    padding: 20px;
-    overflow: auto;
-    margin-top: 60px;
-  }
+    flex-direction: column;
+    color: white; /* Text color */
+    border-radius: 10px;
+    overflow: hidden; /* Round the edges of the image */
+    background-color: #1e1e1e !important;
+}
 
-  .lyrics-container {
-    text-align: left;
-    height: calc(100vh - 122px);
-    background-color: #000000;
-  }
+.card > img {
+    width: 100% !important; /* Full width of the card */
+    height: 70% !important;
+    aspect-ratio: 1; /* Ensures a square image */
+    object-fit: cover; /* Keeps the image nicely cropped */
+}
 
-  .lyrics-container > h4 {
-    background-color: #000;
-    font-size: 20px;
-  }
-
-  .lyrics-text {
-    white-space: pre-wrap;
-    font-size: 17px;
-    background-color: #000;
+.card > div > div:first-child {
+    padding: 16px !important;
     text-align: center;
+}
+
+.card > * {
+    background-color: #060606 !important;
+}
+
+
+/* General Card Styles */
+.card {
+    width: 250px;
+    margin: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
+
+  /* On Hover: Add shadow and scale */
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Card Image */
+  .card > img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  /* Image Zoom on Hover */
+  .card:hover .card > img {
+    transform: scale(1.1);
+  }
+
+  /* Card Body */
+  .card > div {
+    text-align: center;
+    padding: 15px;
+    transition: background-color 0.3s ease;
+  }
+
+
+.text-center {
+    font-size: 30px;
+}

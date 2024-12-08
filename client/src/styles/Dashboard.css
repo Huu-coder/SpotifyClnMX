@@ -6,17 +6,14 @@
     font-family: 'Lexend', sans-serif;
     border-radius: 5px !important;
     box-shadow: none !important;
-    background-color: #121212;
-    color: white;
+    background-color: #060606;
+    color: white !important;
     text-decoration: none;
+    transition: all 0.3s ease-in-out;
 }
 
 .__mdrp5m p:nth-of-type(1) a, .rswp_duration {
     color: 	#1db954 !important;
-}
-
-.ml-3 > * {
-    background-color: #1e1e1e !important;
 }
 
 #root {
@@ -57,6 +54,9 @@
     padding: 15px;
     margin: 10px !important;
     width: 500px;
+    height: 50px;
+    border: none !important;
+    background-color: #212121;
   }
 
   .volume__thumb, .slider__thumb {
@@ -95,14 +95,17 @@
     margin-top: 10px !important;
 }
 
+.container {
+    position: relative;
+    height: 90vh !important;
+}
+
 .mu-container {
     display: flex;
     height: 90vh !important;
     flex-wrap: wrap;
     justify-content: center;
-    width: 50vw !important;
-    position: relative;
-
+    width: 74vw !important;
 }
 
 *::-webkit-scrollbar {
@@ -134,7 +137,7 @@
     color: white; /* Text color */
     border-radius: 10px;
     overflow: hidden; /* Round the edges of the image */
-    background-color: #1e1e1e;
+    background-color: #1e1e1e !important;
 }
 
 .card > img {
@@ -149,6 +152,48 @@
     text-align: center;
 }
 
-.navbar_navList__v4rjz > * > *{
-    background-color: #000 !important;
+.card > * {
+    background-color: #060606 !important;
+}
+
+
+/* General Card Styles */
+.card {
+    width: 250px;
+    margin: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* On Hover: Add shadow and scale */
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Card Image */
+  .card > img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  /* Image Zoom on Hover */
+  .card:hover .card > img {
+    transform: scale(1.1);
+  }
+
+  /* Card Body */
+  .card > div {
+    text-align: center;
+    padding: 15px;
+    transition: background-color 0.3s ease;
+  }
+
+
+.text-center {
+    font-size: 30px;
 }
