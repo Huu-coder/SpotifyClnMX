@@ -66,8 +66,8 @@ const Navbar = () => {
             {isModalOpen && (
               <div className={modalStyles.modal}>
                 <div className={modalStyles.modalContent}>
-                  <button onClick={logout} className={modalStyles.button}>Đăng xuất</button>
-                  <button onClick={toggleModal} className={modalStyles.closeButton}>Đóng</button>
+                  <button onClick={logout} className={modalStyles.button}>Log Out</button>
+                  <button onClick={toggleModal} className={modalStyles.closeButton}>Close</button>
                 </div>
               </div>
             )}

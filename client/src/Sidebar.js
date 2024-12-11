@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { FaHome, FaSearch, FaMusic } from "react-icons/fa";
 import axios from "axios";
 import sidecss from "./styles/Sidebar.module.css";
 
@@ -74,6 +73,7 @@ const Sidebar = ({ accessToken, chooseTrack }) => {
       </ul>
       <div className={sidecss.sidebarfooter}>
         <p>&copy; 2024 HuuCoder</p>
+        <a href="http://localhost:3000/Contact">Contact Us</a>
       </div>
     </div>
   );

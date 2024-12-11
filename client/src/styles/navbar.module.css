@@ -1,5 +1,6 @@
 * {
     transition: all 0.3s ease-in-out;
+
 }
 /* Navbar Styles */
 .navbar {
@@ -8,13 +9,13 @@
     left: 0;
     width: 100vw;
     height: 70px;
-    background-color: #060606;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
     z-index: 10; /* Đảm bảo navbar không bị che khuất */
   }
+
 
   .navList {
     list-style-type: none;
